@@ -8,13 +8,14 @@ ERROR_MESSAGE = "command not found"
 
 
 def main():
-    sys.stdout.write("$ ")
-    sys.stdout.flush()
+    while True:
+        sys.stdout.write("$ ")
+        sys.stdout.flush()
 
-    # Wait for user input
-    command = input()
-    if command not in SUPPORTED_COMMANDS:
-        print(f"{command}: {ERROR_MESSAGE}")
+        # Wait for user input
+        command = input()
+        if command not in SUPPORTED_COMMANDS:
+            print(f"{command}: {ERROR_MESSAGE}")
 
 
 if __name__ == "__main__":
