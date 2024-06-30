@@ -56,4 +56,9 @@ class Handler:
         try:
             func(*self.args)
         except TypeError:
-            self.handle_unknown()
+            if any(os.path.isfile("/".join([path, self.func_name])) for path in self.paths):
+                # Reconstruct the user input.
+                command = " ".join([self.func_name, " ".join(self.args)])
+                os.system(command)
+            else:
+                self.handle_unknown()
