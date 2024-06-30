@@ -1,22 +1,6 @@
 import sys
 
-
-# The list of the supported commands.
-SUPPORTED_COMMANDS = {
-    "exit": "handle_exit",
-    "echo": "handle_echo",
-}
-
-
-ERROR_MESSAGE = "command not found"
-
-
-def handle_exit(_):
-    exit()
-
-
-def handle_echo(*args):
-    print(*args)
+from app.handler import Handler
 
 
 def main():
@@ -28,17 +12,11 @@ def main():
         user_input = input().split()
         try:
             command = user_input.pop(0)
-        except ValueError:
+            args = user_input
+            handler = Handler(func_name=command, args=args)
+            handler.start()
+        except IndexError:
             break
-
-        args = user_input
-
-        if command not in SUPPORTED_COMMANDS.keys():
-            print(f"{command}: {ERROR_MESSAGE}")
-        else:
-            func_name = SUPPORTED_COMMANDS[command]
-            func = globals()[func_name]
-            func(*args)
 
 
 if __name__ == "__main__":
