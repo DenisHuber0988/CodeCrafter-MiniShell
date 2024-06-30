@@ -1,19 +1,22 @@
+import os
+
+
 class Handler:
 
     ERROR_MESSAGE = "command not found"
     NOT_FOUND_MESSAGE = "not found"
     SHELL_BUILTIN_MESSAGE = "a shell builtin"
     BIN_METHOD_MESSAGE = "/bin/"
-    SHELL_BUILTIN_METHOD = [
+    SHELL_BUILTIN_COMMAND = [
         "echo",
         "exit",
         "type",
     ]
-    BIN_METHOD = [
+    BIN_COMMAND = [
         "cat",
     ]
 
-    def __init__(self, func_name, args: list):
+    def __init__(self, func_name: str, args: list):
         """
 
         :param func_name: The function name to call for the command.
@@ -21,25 +24,32 @@ class Handler:
         """
         self.func_name = func_name
         self.args = args
+        self.paths = os.environ["PATH"].split(":")
 
     def handle_unknown(self):
         print(f"{self.func_name}: {self.ERROR_MESSAGE}")
 
     @staticmethod
-    def exit(_):
+    def exit(_=None):
         exit()
 
     @staticmethod
     def echo(*args):
         print(*args)
 
-    def type(self, method):
-        if method in self.SHELL_BUILTIN_METHOD:
-            print(f"{method} is {self.SHELL_BUILTIN_MESSAGE}")
-        elif method in self.BIN_METHOD:
-            print(f"{method} is {self.BIN_METHOD_MESSAGE}{method}")
+    def type(self, command):
+        command_path = None
+
+        for path_name in self.paths:
+            if os.path.isfile("/".join([path_name, command])):
+                command_path = "/".join([path_name, command])
+
+        if command in self.SHELL_BUILTIN_COMMAND:
+            print(f"{command} is {self.SHELL_BUILTIN_MESSAGE}")
+        elif command_path:
+            print(f"{command} is {command_path}")
         else:
-            print(f"{method}: {self.NOT_FOUND_MESSAGE}")
+            print(f"{command}: {self.NOT_FOUND_MESSAGE}")
 
     def start(self):
         func = getattr(self, self.func_name, None)
