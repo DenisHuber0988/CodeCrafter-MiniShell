@@ -11,6 +11,7 @@ class Handler:
     NOT_FOUND_MESSAGE = "not found"
     SHELL_BUILTIN_MESSAGE = "a shell builtin"
     BIN_METHOD_MESSAGE = "/bin/"
+
     SHELL_BUILTIN_COMMAND = [
         "cd",
         "echo",
@@ -21,6 +22,8 @@ class Handler:
     BIN_COMMAND = [
         "cat",
     ]
+
+    HOME_PATH = "~"
 
     def __init__(self, func_name: str, args: list):
         """
@@ -38,6 +41,8 @@ class Handler:
     def cd(self, path):
         if os.path.isfile(path) or os.path.isdir(path):
             os.chdir(path)
+        elif path == self.HOME_PATH:
+            os.chdir(os.environ["HOME"])
         else:
             print(f"{path}: {self.CD_ERROR_MESSAGE}")
 
