@@ -10,6 +10,7 @@ class Handler:
     SHELL_BUILTIN_COMMAND = [
         "echo",
         "exit",
+        "pwd",
         "type",
     ]
     BIN_COMMAND = [
@@ -36,6 +37,10 @@ class Handler:
     @staticmethod
     def echo(*args):
         print(*args)
+
+    @staticmethod
+    def pwd(_=None):
+        print(os.getcwd())
 
     def type(self, command):
         command_path = None
