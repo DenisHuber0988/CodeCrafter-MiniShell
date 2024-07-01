@@ -2,6 +2,9 @@ import os
 
 
 class Handler:
+    """
+    Handling command received in input, and return the expected behavior if the command is supported or not.
+    """
 
     ERROR_MESSAGE = "command not found"
     CD_ERROR_MESSAGE = "No such file or directory"
