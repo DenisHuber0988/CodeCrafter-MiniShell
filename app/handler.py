@@ -4,10 +4,12 @@ import os
 class Handler:
 
     ERROR_MESSAGE = "command not found"
+    CD_ERROR_MESSAGE = "No such file or directory"
     NOT_FOUND_MESSAGE = "not found"
     SHELL_BUILTIN_MESSAGE = "a shell builtin"
     BIN_METHOD_MESSAGE = "/bin/"
     SHELL_BUILTIN_COMMAND = [
+        "cd",
         "echo",
         "exit",
         "pwd",
@@ -29,6 +31,12 @@ class Handler:
 
     def handle_unknown(self):
         print(f"{self.func_name}: {self.ERROR_MESSAGE}")
+
+    def cd(self, path):
+        if os.path.isfile(path) or os.path.isdir(path):
+            os.chdir(path)
+        else:
+            print(f"{path}: {self.CD_ERROR_MESSAGE}")
 
     @staticmethod
     def exit(_=None):
